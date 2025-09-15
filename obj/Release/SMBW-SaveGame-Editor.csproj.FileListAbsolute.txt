@@ -1,0 +1,9 @@
+C:\Users\datni\Documents\SMBW-SaveGame-Editor\SMBW-SaveGame-Editor\bin\Release\SMBW-SaveGame-Editor.exe
+C:\Users\datni\Documents\SMBW-SaveGame-Editor\SMBW-SaveGame-Editor\bin\Release\SMBW-SaveGame-Editor.pdb
+C:\Users\datni\Documents\SMBW-SaveGame-Editor\SMBW-SaveGame-Editor\obj\Release\SMBW-SaveGame-Editor.csproj.AssemblyReference.cache
+C:\Users\datni\Documents\SMBW-SaveGame-Editor\SMBW-SaveGame-Editor\obj\Release\SMBW_SaveGame_Editor.MainWindow.resources
+C:\Users\datni\Documents\SMBW-SaveGame-Editor\SMBW-SaveGame-Editor\obj\Release\SMBW_SaveGame_Editor.Properties.Resources.resources
+C:\Users\datni\Documents\SMBW-SaveGame-Editor\SMBW-SaveGame-Editor\obj\Release\SMBW-SaveGame-Editor.csproj.GenerateResource.cache
+C:\Users\datni\Documents\SMBW-SaveGame-Editor\SMBW-SaveGame-Editor\obj\Release\SMBW-SaveGame-Editor.csproj.CoreCompileInputs.cache
+C:\Users\datni\Documents\SMBW-SaveGame-Editor\SMBW-SaveGame-Editor\obj\Release\SMBW-SaveGame-Editor.exe
+C:\Users\datni\Documents\SMBW-SaveGame-Editor\SMBW-SaveGame-Editor\obj\Release\SMBW-SaveGame-Editor.pdb

@@ -21,31 +21,18 @@ namespace SMBW_SaveGame_Editor.SaveFile
         public int P_Coins;
         public int PURPLE_COINS;
         public int Lives;
-        public int COURSE_001;
-        public int COURSE_001_END_SEED;
-        public int COURSE_002;
-        public int COURSE_002_END_SEED;
-        public int COURSE_003;
-        public int COURSE_003_END_SEED;
-        public int COURSE_004;
-        public int COURSE_004_END_SEED;
-        public int COURSE_005;
-        public int COURSE_005_END_SEED;
-        public int COURSE_006;
-        public int COURSE_006_END_SEED;
-        public int[] Courses;
-         public int[] EndSeed;
+
+        public int[] W1BreakTimeSeed;
+
         #endregion
         public SMBW_SaveFile(string path)
         {
+
             if (!File.Exists(path)) return;
 
             _Path = path;
             _Data = File.ReadAllBytes(_Path);
             IsLoaded = true;
-
-            Courses = new int[] { COURSE_001, COURSE_002, COURSE_003, COURSE_004};
-            EndSeed = new int[] { COURSE_001_END_SEED, COURSE_002_END_SEED, COURSE_003_END_SEED, COURSE_004_END_SEED};
             CreateBackup();
             LoadOffsets();
             Coins = ReadCoins();
@@ -66,26 +53,23 @@ namespace SMBW_SaveGame_Editor.SaveFile
             WORLD6_SEED = FindBytePatternOffset(Byte_Patterns.GRAND_SEED_WORLD6);
             COINS_VALUE = FindBytePatternOffset(Byte_Patterns.COINS_PATTERN);
             PURPLE_COINS = FindBytePatternOffset(Byte_Patterns.PURPLE_COINS_PATTERN);
-
-
-
-            int count = Data.GameData.AllCourses.Values.Sum(c => c.Count);
-            int i = 0;
-            foreach (var course in Data.GameData.AllCourses.Values)
-            {
-                foreach (var level in course)
-                {
-                    uint Hex = level.CourseClearHex;
-                    uint GoalSeed = level.GoalWonderSeed;
-                    Courses[i] = (int)Hex;
-                    EndSeed[i] = (int)GoalSeed;
-                    i++;
-                }
- 
-            }
-
+            
+            SaveFile.WriteCouseClearNormal(CourseData.World1Courses, (int)0x43F0, "CourseClear");
+            SaveFile.WriteCouseClearBadge(CourseData.World1Courses, (int)0x4438, "CourseClear");
+            SaveFile.WriteCouseClearBreaktime(CourseData.World1Courses, (int)0x44B0, "CourseClear");
+            SaveFile.WriteCouseClearNormal(CourseData.World1Courses, (int)0x3AF8, "WonderSeed");
+            SaveFile.WriteElse(CourseData.World1Courses, (int)0x0CD3, "ClapperGate", "Palace");
+            SaveFile.WriteElse(CourseData.World1Courses, (int)0x4460, "CourseClear", "Palace");
+            SaveFile.WriteElse(CourseData.World1Courses, (int)0x4488, "CourseClear", "Arena");
+            SaveFile.WriteElse(CourseData.World1Courses, (int)0x33E0, "GoalSeed", "Arena");
+            SaveFile.WriteCouseClearNormal(CourseData.World1Courses, (int)0x3348, "GoalSeed");
+            SaveFile.WriteCouseClearBadge(CourseData.World1Courses, (int)0x3390, "GoalSeed");
+            SaveFile.WriteCouseClearBreaktime(CourseData.World1Courses, (int)0x3408, "GoalSeed");
+            SaveFile.WriteCouseClearNormal(CourseData.World1Courses, (int)0x1718, "PurpleCoin");
+            SaveFile.WriteCouseClearBadge(CourseData.World1Courses, (int)0x1760, "PurpleCoin");
+            SaveFile.WriteElse(CourseData.World1Courses, (int)0x1788, "PurpleCoin", "Palace");
+            SaveFile.WriteElse(CourseData.World1Courses, (int)0x17B0, "PurpleCoin", "Arena");
         }
-
 
         public void PatchSaveFile()
         {
@@ -132,7 +116,7 @@ namespace SMBW_SaveGame_Editor.SaveFile
             byte highByte = (byte)((value >> 8) & 0xFF);
             _Data[PURPLE_COINS] = lowByte;
             _Data[PURPLE_COINS + 1] = highByte;
-
         }
+       
     }
 }

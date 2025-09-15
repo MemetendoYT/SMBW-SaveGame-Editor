@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -10,7 +11,6 @@ namespace SMBW_SaveGame_Editor.SaveFile
 
         internal string _Path = "progress.sav";
         internal byte[] _Data;
-        
         public void WriteSaveFile()
         {
             File.WriteAllBytes(_Path, _Data);
@@ -47,11 +47,18 @@ namespace SMBW_SaveGame_Editor.SaveFile
         public bool ReadBool(int offset)
         {
             return BitConverter.ToBoolean(_Data, offset);
+
         }
 
         public void WriteBool(int offset, bool value)
         {
             _Data[offset] = value ? (byte)0x01 : (byte)0x00;
+           
+        }
+
+        public byte GetByte(int offset)
+        {
+            return _Data[offset];
         }
 
         public int ReadInt(int offset)
@@ -104,6 +111,111 @@ namespace SMBW_SaveGame_Editor.SaveFile
 
             Array.Copy(stringBytes, 0, byteData, 0, Math.Min(stringBytes.Length, byteData.Length));
             Array.Copy(byteData, 0, _Data, offset, 0x40);
+        }
+        public static void WriteCouseClearNormal(Dictionary<string, LevelInfo> courses, int startOffset, string WriteLocation)
+        {
+            int offset = startOffset;
+
+            foreach (var entry in courses)
+            {
+                LevelInfo info = entry.Value;
+
+                if (!info.Name.Contains("Break Time") && !info.Name.Contains("Badge") && !info.Name.Contains("Palace") && !info.Name.Contains("Arena"))
+                {
+                   
+
+                    DecideCourse(info, WriteLocation, offset);
+
+                    offset += 4;
+                }
+            }
+        }
+        public static void WriteElse(Dictionary<string, LevelInfo> courses, int startOffset, string WriteLocation, string Search)
+        {
+            int offset = startOffset;
+
+            foreach (var entry in courses)
+            {
+               
+                LevelInfo info = entry.Value;
+
+                if (info.Name.Contains(Search))
+                {
+                    DecideCourse(info, WriteLocation, offset);
+                }
+            }
+        }
+
+        public static void WriteCouseClearBadge(Dictionary<string, LevelInfo> courses, int startOffset, string WriteLocation)
+        {
+            int offset = startOffset;
+
+            foreach (var entry in courses)
+            {
+                LevelInfo info = entry.Value;
+                if (info.Name.Contains("Badge"))
+                {
+                    DecideCourse(info, WriteLocation, offset);
+                    offset += 4;
+                }
+             
+            }
+        }
+
+        public static void WriteCouseClearBreaktime(Dictionary<string, LevelInfo> courses, int startOffset, string WriteLocation)
+        {
+            int offset = startOffset;
+            foreach (var entry in courses)
+            {
+
+                LevelInfo info = entry.Value;
+
+                if (info.Name.Contains("Break Time"))
+                {
+                    DecideCourse(info, WriteLocation, offset);
+                    offset += 4;
+                }
+                   
+ 
+              }
+        }
+
+        
+
+        public static void DecideCourse(LevelInfo info, string WriteLocation, int offset)
+        {
+            switch (WriteLocation)
+                    {
+                        case "CourseClear":
+                            info.CourseClearHex = offset;
+                            break;
+                        case "GoalSeed":
+                    if (info.GoalWonderSeed != -1)
+                      
+                    {
+                        info.GoalWonderSeed = offset;
+                    }
+                            break;
+                        case "WonderSeed":
+                    if (info.WonderSeed != -1)
+                    {
+                        info.WonderSeed = offset;
+                    }
+                            break;
+                        case "PurpleCoin":
+                    if (info.PurpleCoinOffset != -1)
+                    {
+                        info.PurpleCoinOffset = offset;
+                    }
+                    break;
+                        case "ClapperGate":
+                    if (info.ClapperGate != -1)
+                    {
+                        info.ClapperGate = offset;
+                    }
+                        break;
+                    
+                    }    
         }
     }
 }
